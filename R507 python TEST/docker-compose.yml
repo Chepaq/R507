@@ -1,0 +1,32 @@
+name: blibli
+
+services:
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - "5010:5010"
+    volumes:
+      - ./back/database:/app/database
+    networks:
+      - app-network
+    environment:
+      - API_SERVICE_URL=http://back:5010
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "5008:5008"
+    volumes:
+      - ./back/database:/app/database
+    networks:
+      - app-network
+    environment:
+      - API_SERVICE_URL=http://back:5010
+
+networks:
+  app-network:
+    driver: bridge
